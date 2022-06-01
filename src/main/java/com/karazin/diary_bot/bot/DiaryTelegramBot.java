@@ -11,6 +11,7 @@ import com.karazin.diary_bot.bot.handlers.MessageHandler;
 import com.karazin.diary_bot.bot.handlers.commands.AddPostCommand;
 import com.karazin.diary_bot.bot.handlers.commands.ShowAllPostsCommand;
 import com.karazin.diary_bot.bot.handlers.commands.StartCommand;
+import com.karazin.diary_bot.bot.keyboard.ReplyKeyboardMaker;
 import com.karazin.diary_bot.bot.util.BotState;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -33,13 +34,17 @@ public class DiaryTelegramBot extends TelegramWebhookBot {
     private final UserService userService;
     private final PostService postService;
     private final CommandRegistry commandRegistry;
+    private final ReplyKeyboardMaker replyKeyboardMaker;
 
-    public DiaryTelegramBot(BotConfig config, MessageHandler messageHandler, CallbackHandler callbackHandler, UserService userService, PostService postService, TelegramClient telegramClient) {
+    public DiaryTelegramBot(BotConfig config, MessageHandler messageHandler, CallbackHandler callbackHandler,
+                            UserService userService, PostService postService, TelegramClient telegramClient,
+                            ReplyKeyboardMaker replyKeyboardMaker) {
         this.config = config;
         this.messageHandler = messageHandler;
         this.callbackHandler = callbackHandler;
         this.userService = userService;
         this.postService = postService;
+        this.replyKeyboardMaker = replyKeyboardMaker;
         this.commandRegistry = new CommandRegistry(true, this::getBotUsername);
         if (telegramClient.setWebhook(getBotToken(), getBotPath()).getStatusCode() == HttpStatus.OK) {
             log.info("Webhook was set");
@@ -49,7 +54,7 @@ public class DiaryTelegramBot extends TelegramWebhookBot {
     }
 
     public void addCommands() {
-        this.commandRegistry.register(new StartCommand());
+        this.commandRegistry.register(new StartCommand(replyKeyboardMaker));
         this.commandRegistry.register(new AddPostCommand(userService));
         this.commandRegistry.register(new ShowAllPostsCommand(postService));
     }
