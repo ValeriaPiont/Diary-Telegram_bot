@@ -1,4 +1,4 @@
-package com.karazin.diary_bot.backend.models;
+package com.karazin.diary_bot.backend.entities;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +28,9 @@ public class Post {
 
     @Column(name = "publish_date")
     private LocalDateTime createdOn;
+
+    @Column(name = "update_date")
+    private LocalDateTime updatedOn;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")

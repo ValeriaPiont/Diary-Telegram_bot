@@ -3,15 +3,13 @@ package com.karazin.diary_bot.backend.dao.impl;
 import com.karazin.diary_bot.backend.dao.PostDAO;
 import com.karazin.diary_bot.backend.dao.util.EntityManagerPerform;
 import com.karazin.diary_bot.backend.exceptions.RollBackException;
-import com.karazin.diary_bot.backend.models.Post;
-import com.karazin.diary_bot.backend.models.User;
+import com.karazin.diary_bot.backend.entities.Post;
+import com.karazin.diary_bot.backend.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,8 +17,6 @@ import java.util.Optional;
 public class PostDAOImpl implements PostDAO {
 
     private final EntityManagerPerform entityManagerPerform;
-    private static final String DATE_TITLE = "Note dated ";
-    private static final String DATE_TITLE_FORMAT = "yyyy-MM-dd HH:mm";
 
     @Autowired
     public PostDAOImpl(EntityManagerPerform entityManagerPerform) {
@@ -28,7 +24,6 @@ public class PostDAOImpl implements PostDAO {
     }
 
     public void updatePost(Post post) {
-        post.setCreatedOn(LocalDateTime.now());
         entityManagerPerform.perform(entityManager -> entityManager.persist(entityManager.merge(post)));
     }
 
@@ -43,27 +38,20 @@ public class PostDAOImpl implements PostDAO {
         );
     }
 
-    public Post addPost(Long userId, String text) {
+    public void addPost(Long userId, Post post) {
         EntityManager entityManager = entityManagerPerform.getEntityManagerFactory().createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
         try {
             User user = entityManager.find(User.class, userId);
-            Post post = new Post();
-            post.setText(text);
-            LocalDateTime date = LocalDateTime.now();
-            post.setCreatedOn(date);
-            post.setTitle(DATE_TITLE + date.format(DateTimeFormatter.ofPattern(DATE_TITLE_FORMAT)));
             user.addPost(post);
             entityManager.merge(user);
             entityManager.persist(post);
             transaction.commit();
-            return post;
         } catch (Exception ex) {
             transaction.rollback();
             throw new RollBackException();
         }
-
     }
 
     public Optional<Post> findPostById(Long id) {

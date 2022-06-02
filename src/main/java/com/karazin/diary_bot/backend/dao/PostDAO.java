@@ -1,6 +1,6 @@
 package com.karazin.diary_bot.backend.dao;
 
-import com.karazin.diary_bot.backend.models.Post;
+import com.karazin.diary_bot.backend.entities.Post;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,10 +36,9 @@ public interface PostDAO {
      * Adds a new post to an existing user. This method does not require additional SQL select methods to load
      *
      * @param userId user Telegram (chat) id
-     * @param text   text for post
-     * @return post instance
+     * @param post  post
      */
-    Post addPost(Long userId, String text);
+    void addPost(Long userId, Post post);
 
     /**
      * Retrieves a post from the database by its id

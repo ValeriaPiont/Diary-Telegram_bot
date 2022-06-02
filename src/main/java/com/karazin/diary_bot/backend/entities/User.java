@@ -1,4 +1,4 @@
-package com.karazin.diary_bot.backend.models;
+package com.karazin.diary_bot.backend.entities;
 
 import com.karazin.diary_bot.bot.util.BotState;
 import lombok.Getter;

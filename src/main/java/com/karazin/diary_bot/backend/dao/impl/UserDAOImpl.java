@@ -3,7 +3,7 @@ package com.karazin.diary_bot.backend.dao.impl;
 import com.karazin.diary_bot.backend.dao.UserDAO;
 import com.karazin.diary_bot.backend.dao.util.EntityManagerPerform;
 import com.karazin.diary_bot.backend.exceptions.EntityIsNullException;
-import com.karazin.diary_bot.backend.models.User;
+import com.karazin.diary_bot.backend.entities.User;
 import com.karazin.diary_bot.bot.util.BotState;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

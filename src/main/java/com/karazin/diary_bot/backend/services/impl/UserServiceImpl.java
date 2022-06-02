@@ -3,7 +3,7 @@ package com.karazin.diary_bot.backend.services.impl;
 import com.karazin.diary_bot.backend.dao.impl.UserDAOImpl;
 import com.karazin.diary_bot.backend.exceptions.EntityIsNullException;
 import com.karazin.diary_bot.backend.exceptions.EntityNotFoundException;
-import com.karazin.diary_bot.backend.models.User;
+import com.karazin.diary_bot.backend.entities.User;
 import com.karazin.diary_bot.backend.services.UserService;
 import com.karazin.diary_bot.bot.util.BotState;
 import lombok.extern.slf4j.Slf4j;

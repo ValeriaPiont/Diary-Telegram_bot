@@ -1,6 +1,6 @@
 package com.karazin.diary_bot.backend.dao;
 
-import com.karazin.diary_bot.backend.models.User;
+import com.karazin.diary_bot.backend.entities.User;
 import com.karazin.diary_bot.bot.util.BotState;
 
 import java.util.Optional;
