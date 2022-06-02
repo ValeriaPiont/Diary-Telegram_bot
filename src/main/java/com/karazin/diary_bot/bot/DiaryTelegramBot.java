@@ -1,6 +1,6 @@
 package com.karazin.diary_bot.bot;
 
-import com.karazin.diary_bot.backend.model.User;
+import com.karazin.diary_bot.backend.models.User;
 import com.karazin.diary_bot.backend.services.PostService;
 import com.karazin.diary_bot.backend.services.UserService;
 import com.karazin.diary_bot.bot.config.BotConfig;

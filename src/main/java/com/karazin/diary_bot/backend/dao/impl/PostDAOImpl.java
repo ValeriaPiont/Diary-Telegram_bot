@@ -3,8 +3,8 @@ package com.karazin.diary_bot.backend.dao.impl;
 import com.karazin.diary_bot.backend.dao.PostDAO;
 import com.karazin.diary_bot.backend.dao.util.EntityManagerPerform;
 import com.karazin.diary_bot.backend.exceptions.RollBackException;
-import com.karazin.diary_bot.backend.model.Post;
-import com.karazin.diary_bot.backend.model.User;
+import com.karazin.diary_bot.backend.models.Post;
+import com.karazin.diary_bot.backend.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

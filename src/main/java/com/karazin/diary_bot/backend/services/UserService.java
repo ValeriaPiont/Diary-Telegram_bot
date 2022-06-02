@@ -1,6 +1,6 @@
 package com.karazin.diary_bot.backend.services;
 
-import com.karazin.diary_bot.backend.model.User;
+import com.karazin.diary_bot.backend.models.User;
 import com.karazin.diary_bot.bot.util.BotState;
 
 public interface UserService {

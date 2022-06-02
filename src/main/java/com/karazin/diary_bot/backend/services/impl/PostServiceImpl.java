@@ -3,8 +3,8 @@ package com.karazin.diary_bot.backend.services.impl;
 import com.karazin.diary_bot.backend.dao.impl.PostDAOImpl;
 import com.karazin.diary_bot.backend.dao.impl.UserDAOImpl;
 import com.karazin.diary_bot.backend.exceptions.EntityNotFoundException;
-import com.karazin.diary_bot.backend.model.Post;
-import com.karazin.diary_bot.backend.model.User;
+import com.karazin.diary_bot.backend.models.Post;
+import com.karazin.diary_bot.backend.models.User;
 import com.karazin.diary_bot.backend.services.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,8 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class PostServiceImpl implements PostService {
+
+    private static final int POST_LENGTH = 50;
 
     private final PostDAOImpl postDAO;
     private final UserDAOImpl userDAO;
@@ -34,25 +36,21 @@ public class PostServiceImpl implements PostService {
     }
 
     public boolean updatePostTitle(Long postId, String title) {
-        Optional<Post> optionalPost = postDAO.findPostById(postId);
-        if (optionalPost.isEmpty()) {
-            throw new EntityNotFoundException("Post with id " + postId + " not found");
-        }
-        if(title.length() > 50) {
+        if (isValidLength(title)) {
             return false;
         }
-        Post updatedPost = optionalPost.get();
+        Post updatedPost = getPostById(postId);
         updatedPost.setTitle(title);
         postDAO.updatePost(updatedPost);
         return true;
     }
 
+    public boolean isValidLength(String title) {
+        return title.length() > POST_LENGTH;
+    }
+
     public void updatePostText(Long postId, String text, boolean isAllText) {
-        Optional<Post> optionalPost = postDAO.findPostById(postId);
-        if (optionalPost.isEmpty()) {
-            throw new EntityNotFoundException("Post with id " + postId + " not found");
-        }
-        Post updatedPost = optionalPost.get();
+        Post updatedPost = getPostById(postId);
         if (isAllText) {
             updatedPost.setText(text);
         } else {
@@ -77,11 +75,7 @@ public class PostServiceImpl implements PostService {
     }
 
     public Post getPostById(Long postId) {
-        Optional<Post> optionalPost = postDAO.findPostById(postId);
-        if (optionalPost.isEmpty()) {
-            throw new EntityNotFoundException("Post with id " + postId + " not found");
-        }
-        return optionalPost.get();
+        return postDAO.findPostById(postId).orElseThrow(() -> new EntityNotFoundException("Post with id " + postId + " not found"));
     }
 
 }

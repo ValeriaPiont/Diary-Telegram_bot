@@ -1,4 +1,4 @@
-package com.karazin.diary_bot.backend.model;
+package com.karazin.diary_bot.backend.models;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

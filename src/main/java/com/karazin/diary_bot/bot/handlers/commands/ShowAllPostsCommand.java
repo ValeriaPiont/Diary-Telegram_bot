@@ -1,6 +1,6 @@
 package com.karazin.diary_bot.bot.handlers.commands;
 
-import com.karazin.diary_bot.backend.model.Post;
+import com.karazin.diary_bot.backend.models.Post;
 import com.karazin.diary_bot.backend.services.PostService;
 import com.karazin.diary_bot.bot.util.DefaultBotButton;
 import com.karazin.diary_bot.bot.util.DefaultBotMessage;

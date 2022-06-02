@@ -3,7 +3,7 @@ package com.karazin.diary_bot.backend.services.impl;
 import com.karazin.diary_bot.backend.dao.impl.UserDAOImpl;
 import com.karazin.diary_bot.backend.exceptions.EntityIsNullException;
 import com.karazin.diary_bot.backend.exceptions.EntityNotFoundException;
-import com.karazin.diary_bot.backend.model.User;
+import com.karazin.diary_bot.backend.models.User;
 import com.karazin.diary_bot.backend.services.UserService;
 import com.karazin.diary_bot.bot.util.BotState;
 import lombok.extern.slf4j.Slf4j;
@@ -30,13 +30,6 @@ public class UserServiceImpl implements UserService {
         }
         User savedUser = userDAO.save(user);
         log.info("Saved user: {}", savedUser);
-    }
-
-    public Long getIdUserByTelegramId(Long telegramId) {
-        Optional<User> userOptional = userDAO.findByTelegramId(telegramId);
-        User user = userOptional
-                .orElseThrow(() -> new EntityNotFoundException("User with id " + telegramId + " not found"));
-        return user.getId();
     }
 
     private User getUserByTelegramId(Long telegramId) {

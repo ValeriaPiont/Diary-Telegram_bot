@@ -1,6 +1,6 @@
 package com.karazin.diary_bot.backend.dao;
 
-import com.karazin.diary_bot.backend.model.Post;
+import com.karazin.diary_bot.backend.models.Post;
 
 import java.util.List;
 import java.util.Optional;
