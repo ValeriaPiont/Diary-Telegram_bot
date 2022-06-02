@@ -18,6 +18,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "user_id")
     private Long id;
 
     @Column(nullable = false)
@@ -33,7 +34,7 @@ public class User {
     @Column(name = "chosen_post_id")
     private Long currentIdPostForCommand;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Post> posts;
 
     public void addPost(Post post) {

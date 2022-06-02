@@ -23,7 +23,6 @@ public class Post {
     @Column(name = "post_title", nullable = false)
     private String title;
 
-    @Lob
     @Column(name = "post_text", nullable = false)
     private String text;
 

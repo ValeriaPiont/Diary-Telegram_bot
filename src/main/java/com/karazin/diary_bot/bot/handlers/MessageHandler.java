@@ -28,10 +28,11 @@ public class MessageHandler {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(String.valueOf(telegramId));
         BotState botState = userService.getUserBotStateByTelegramId(telegramId);
+        boolean changeBotState = true;
         try {
             String text = message.getText();
             if (Objects.isNull(text)) {
-                sendMessage.setText(DefaultBotMessage.INVALID_INPUT.getMessage());
+                sendMessage.setText(DefaultBotMessage.INVALID_TEXT.getMessage());
                 sender.execute(sendMessage);
                 return;
             }
@@ -41,8 +42,14 @@ public class MessageHandler {
                     sendMessage.setText(DefaultBotMessage.CREATED.getMessage());
                     break;
                 case WAIT_NEW_POST_NAME:
-                    postService.updatePostTitle(userService.getCurrentIdPostForCommandById(telegramId), text);
-                    sendMessage.setText(DefaultBotMessage.UPDATED.getMessage());
+                    boolean isUpdated = postService
+                            .updatePostTitle(userService.getCurrentIdPostForCommandById(telegramId), text);
+                    if (isUpdated) {
+                        sendMessage.setText(DefaultBotMessage.UPDATED.getMessage());
+                    } else {
+                        sendMessage.setText(DefaultBotMessage.INVALID_TITLE.getMessage());
+                        changeBotState = false;
+                    }
                     break;
                 case WAIT_NEW_CONTENT_FOR_NOTE_ADD:
                     postService.updatePostText(userService.getCurrentIdPostForCommandById(telegramId), text, false);
@@ -53,10 +60,12 @@ public class MessageHandler {
                     sendMessage.setText(DefaultBotMessage.UPDATED.getMessage());
                     break;
                 default:
-                    sendMessage.setText(DefaultBotMessage.INVALID_INPUT.getMessage());
+                    sendMessage.setText(DefaultBotMessage.INVALID_TEXT.getMessage());
                     break;
             }
-            userService.changeUserBotState(BotState.WAIT_FOR_COMMAND, telegramId);
+            if (changeBotState) {
+                userService.changeUserBotState(BotState.WAIT_FOR_COMMAND, telegramId);
+            }
             sender.execute(sendMessage);
         } catch (TelegramApiException e) {
             e.printStackTrace();

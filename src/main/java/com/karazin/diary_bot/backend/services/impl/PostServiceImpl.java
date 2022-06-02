@@ -33,14 +33,18 @@ public class PostServiceImpl implements PostService {
         log.info("Saved post: {}", addedPost);
     }
 
-    public void updatePostTitle(Long postId, String title) {
+    public boolean updatePostTitle(Long postId, String title) {
         Optional<Post> optionalPost = postDAO.findPostById(postId);
         if (optionalPost.isEmpty()) {
             throw new EntityNotFoundException("Post with id " + postId + " not found");
         }
+        if(title.length() > 50) {
+            return false;
+        }
         Post updatedPost = optionalPost.get();
         updatedPost.setTitle(title);
         postDAO.updatePost(updatedPost);
+        return true;
     }
 
     public void updatePostText(Long postId, String text, boolean isAllText) {

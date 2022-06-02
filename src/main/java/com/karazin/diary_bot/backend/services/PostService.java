@@ -14,7 +14,7 @@ public interface PostService {
 
     Post getPostById(Long postId);
 
-    void updatePostTitle(Long postId, String title);
+    boolean updatePostTitle(Long postId, String title);
 
     void updatePostText(Long postId, String text, boolean isAllText);
 
