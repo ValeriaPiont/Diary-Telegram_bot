@@ -1,0 +1,38 @@
+databaseChangeLog:
+  - changeSet:
+      id: v1-2
+      author: Valeria
+      changes:
+        - createTable:
+            tableName: posts
+            columns:
+              - column:
+                  name: post_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: publish_date
+                  type: timestamp
+              - column:
+                  name: update_date
+                  type: timestamp
+              - column:
+                  name: post_text
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: post_title
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: FK_posts_users
+                    referencedTableName: users
+                    referencedColumnNames: user_id
