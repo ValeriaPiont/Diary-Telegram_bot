@@ -1,6 +1,6 @@
 package com.karazin.diary_bot.bot;
 
-import com.karazin.diary_bot.backend.models.User;
+import com.karazin.diary_bot.backend.entities.User;
 import com.karazin.diary_bot.backend.services.PostService;
 import com.karazin.diary_bot.backend.services.UserService;
 import com.karazin.diary_bot.bot.config.BotConfig;
@@ -74,7 +74,7 @@ public class DiaryTelegramBot extends TelegramWebhookBot {
             Message message = update.getMessage();
             Long chatId = message.getFrom().getId();
             String username = message.getFrom().getFirstName();
-            proceedUser(chatId, username);
+            processUser(chatId, username);
             if (update.getMessage().isCommand()) {
                 this.commandRegistry.executeCommand(this, message);
             } else {
@@ -86,7 +86,7 @@ public class DiaryTelegramBot extends TelegramWebhookBot {
         return null;
     }
 
-    public void proceedUser(Long telegramId, String username) {
+    private void processUser(Long telegramId, String username) {
         if (!userService.isExistsByTelegramId(telegramId)) {
             User user = new User();
             user.setBotState(BotState.WAIT_FOR_COMMAND);
@@ -110,4 +110,5 @@ public class DiaryTelegramBot extends TelegramWebhookBot {
     public String getBotToken() {
         return config.getToken();
     }
+
 }

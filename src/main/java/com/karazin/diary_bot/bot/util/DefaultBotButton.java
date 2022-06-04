@@ -1,8 +1,10 @@
 package com.karazin.diary_bot.bot.util;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public enum DefaultBotButton {
 
     RENAME_TITLE_BUTTON("rename-title ", "Rename title"),
@@ -13,10 +15,5 @@ public enum DefaultBotButton {
 
     private String callbackData;
     private String buttonData;
-
-    DefaultBotButton(String callbackData, String buttonData) {
-        this.callbackData = callbackData;
-        this.buttonData = buttonData;
-    }
 
 }

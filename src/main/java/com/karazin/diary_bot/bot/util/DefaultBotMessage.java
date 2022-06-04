@@ -1,8 +1,10 @@
 package com.karazin.diary_bot.bot.util;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public enum DefaultBotMessage {
 
     ENTER_NEW_POST("✏Enter your text of new post"),
@@ -25,9 +27,5 @@ public enum DefaultBotMessage {
     INVALID_TITLE("❗Title should be less then 50 characters");
 
     private String message;
-
-    DefaultBotMessage(String message) {
-        this.message = message;
-    }
 
 }
