@@ -25,11 +25,12 @@ public class UserServiceImpl implements UserService {
     }
 
     public void saveUser(User user) {
+        log.info("User to save {}", user);
         if (Objects.isNull(user)) {
             throw new EntityIsNullException("Incoming user is null");
         }
-        User savedUser = userDAO.save(user);
-        log.info("Saved user: {}", savedUser);
+        userDAO.save(user);
+        log.info("User saved");
     }
 
     private User getUserByTelegramId(Long telegramId) {

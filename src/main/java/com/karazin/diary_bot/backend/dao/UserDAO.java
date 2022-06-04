@@ -14,9 +14,8 @@ public interface UserDAO {
      * Saves user into databse and sets an id
      *
      * @param user new user
-     * @return user instance
      */
-    User save(User user);
+    void save(User user);
 
     /**
      * Retrieves a user from the database by its Telegram id

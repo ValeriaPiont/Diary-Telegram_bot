@@ -23,9 +23,8 @@ public class UserDAOImpl implements UserDAO {
         this.entityManagerPerform = entityManagerPerform;
     }
 
-    public User save(User user) {
+    public void save(User user) {
         entityManagerPerform.perform(entityManager -> entityManager.persist(entityManager.merge(user)));
-        return user;
     }
 
     public Optional<User> findByTelegramId(Long telegramId) {

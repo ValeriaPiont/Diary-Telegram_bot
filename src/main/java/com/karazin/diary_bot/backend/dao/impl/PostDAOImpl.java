@@ -32,7 +32,7 @@ public class PostDAOImpl implements PostDAO {
     }
 
     public List<Post> findAllPosts(Long telegramId) {
-        return entityManagerPerform.performWith(entityManager -> entityManager.createQuery("select p from Post p LEFT JOIN p.user u where u.telegramId =: telegramId ORDER BY p.createdOn DESC", Post.class)
+        return entityManagerPerform.performWith(entityManager -> entityManager.createQuery("select p from Post p LEFT JOIN p.user u where u.telegramId =: telegramId ORDER BY p.updatedOn DESC", Post.class)
                 .setParameter("telegramId", telegramId)
                 .getResultList()
         );
