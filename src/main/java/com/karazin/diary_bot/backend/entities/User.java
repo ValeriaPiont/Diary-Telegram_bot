@@ -1,15 +1,15 @@
 package com.karazin.diary_bot.backend.entities;
 
 import com.karazin.diary_bot.bot.util.BotState;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
-@NoArgsConstructor
+@Builder
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
 @Table(name = "users")
@@ -34,6 +34,7 @@ public class User {
     @Column(name = "chosen_post_id")
     private Long currentIdPostForCommand;
 
+    @Setter(AccessLevel.PRIVATE)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Post> posts;
 

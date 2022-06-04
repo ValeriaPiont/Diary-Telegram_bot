@@ -35,12 +35,13 @@ public class PostServiceImpl implements PostService {
     public void savePostText(String text, Long telegramId) {
         User user = userDAO.findByTelegramId(telegramId)
                 .orElseThrow(() -> new EntityNotFoundException("User with id " + telegramId + " not found"));
-        Post addedPost = new Post();
-        addedPost.setText(text);
         LocalDateTime date = LocalDateTime.now();
-        addedPost.setCreatedOn(date);
-        addedPost.setUpdatedOn(date);
-        addedPost.setTitle(createDateTitle(date, true));
+        Post addedPost =  Post.builder()
+                .text(text)
+                .createdOn(date)
+                .updatedOn(date)
+                .title(createDateTitle(date, true))
+                .build();
         postDAO.addPost(user.getId(), addedPost);
         log.info("Saved post: {} to user with telegram id {}", addedPost, telegramId);
     }

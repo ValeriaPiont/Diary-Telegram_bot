@@ -46,14 +46,15 @@ public class DiaryTelegramBot extends TelegramWebhookBot {
         this.postService = postService;
         this.replyKeyboardMaker = replyKeyboardMaker;
         this.commandRegistry = new CommandRegistry(true, this::getBotUsername);
-        if (telegramClient.setWebhook(getBotToken(), getBotPath()).getStatusCode() == HttpStatus.OK) {
-            log.info("Webhook was set");
+        if (telegramClient.setWebhook(getBotToken(), getBotPath()).getStatusCode() != HttpStatus.OK) {
+            throw new DiaryTelegramBotException("Exception: webhook not set");
         }
+        log.info("Webhook was set");
         addCommands();
         log.info("All commands was registered");
     }
 
-    public void addCommands() {
+    private void addCommands() {
         this.commandRegistry.register(new StartCommand(replyKeyboardMaker));
         this.commandRegistry.register(new AddPostCommand(userService));
         this.commandRegistry.register(new ShowAllPostsCommand(postService));
@@ -88,10 +89,11 @@ public class DiaryTelegramBot extends TelegramWebhookBot {
 
     private void processUser(Long telegramId, String username) {
         if (!userService.isExistsByTelegramId(telegramId)) {
-            User user = new User();
-            user.setBotState(BotState.WAIT_FOR_COMMAND);
-            user.setTelegramId(telegramId);
-            user.setUsername(username);
+            User user = User.builder()
+                    .botState(BotState.WAIT_FOR_COMMAND)
+                    .telegramId(telegramId)
+                    .username(username)
+                    .build();
             userService.saveUser(user);
         }
     }
