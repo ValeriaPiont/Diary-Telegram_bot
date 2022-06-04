@@ -31,3 +31,12 @@ databaseChangeLog:
               - column:
                   name: chosen_post_id
                   type: integer
+  - changeSet:
+      id: v1-3
+      author: Valeria
+      changes:
+        - modifyDataType:
+            columnName: chosen_post_id
+            newDataType: bigint
+            schemaName: public
+            tableName: users
