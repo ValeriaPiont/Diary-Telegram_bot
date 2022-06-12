@@ -1,9 +1,10 @@
 package com.karazin.diary_bot.backend.services.impl;
 
 import com.karazin.diary_bot.backend.dao.impl.UserDAOImpl;
+import com.karazin.diary_bot.backend.entities.User;
 import com.karazin.diary_bot.backend.exceptions.EntityIsNullException;
 import com.karazin.diary_bot.backend.exceptions.EntityNotFoundException;
-import com.karazin.diary_bot.backend.entities.User;
+import com.karazin.diary_bot.backend.repositories.UserRepository;
 import com.karazin.diary_bot.backend.services.UserService;
 import com.karazin.diary_bot.bot.util.BotState;
 import lombok.extern.slf4j.Slf4j;
@@ -17,11 +18,13 @@ import java.util.Optional;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-    private final UserDAOImpl userDAO;
+    //    private final UserDAOImpl userDAO;
+    private final UserRepository userRepository;
+
 
     @Autowired
-    public UserServiceImpl(UserDAOImpl userDAO) {
-        this.userDAO = userDAO;
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     public void saveUser(User user) {
@@ -29,38 +32,38 @@ public class UserServiceImpl implements UserService {
         if (Objects.isNull(user)) {
             throw new EntityIsNullException("Incoming user is null");
         }
-        userDAO.save(user);
+        userRepository.save(user);
         log.info("User saved");
     }
 
     private User getUserByTelegramId(Long telegramId) {
-        Optional<User> userOptional = userDAO.findByTelegramId(telegramId);
+        Optional<User> userOptional = userRepository.findByTelegramId(telegramId);
         return userOptional
                 .orElseThrow(() -> new EntityNotFoundException("User with id " + telegramId + " not found"));
     }
 
     public BotState getUserBotStateByTelegramId(Long telegramId) {
-        return userDAO.getBotStateById(telegramId);
+        return userRepository.findBotStateByTelegramId(telegramId);
     }
 
     public boolean isExistsByTelegramId(Long telegramId) {
-        return userDAO.userIsExistByTelegramId(telegramId);
+        return userRepository.existsUserByTelegramId(telegramId);
     }
 
     public void changeUserBotState(BotState botState, Long telegramId) {
         User user = getUserByTelegramId(telegramId);
         user.setBotState(botState);
-        userDAO.save(user);
+        userRepository.save(user);
     }
 
     public void changeCurrentIdPostForCommand(Long chosenPostId, Long telegramId) {
         User user = getUserByTelegramId(telegramId);
         user.setCurrentIdPostForCommand(chosenPostId);
-        userDAO.save(user);
+        userRepository.save(user);
     }
 
     public Long getCurrentIdPostForCommandById(Long telegramId) {
-        return userDAO.getCurrentIdPostForCommandById(telegramId);
+        return userRepository.findChosenPostIdByTelegramId(telegramId);
     }
 
 }
