@@ -1,71 +1,56 @@
 package com.karazin.diary_bot.bot.handlers;
 
-import com.karazin.diary_bot.backend.services.PostService;
-import com.karazin.diary_bot.backend.services.UserService;
-import com.karazin.diary_bot.bot.keyboard.InlineKeyboardMaker;
-import com.karazin.diary_bot.bot.util.BotState;
-import com.karazin.diary_bot.bot.util.DefaultBotMessage;
+import com.karazin.diary_bot.bot.handlers.commands.callBackCommands.CallBackCommand;
+import com.karazin.diary_bot.bot.handlers.commands.callBackCommands.impl.*;
+import com.karazin.diary_bot.bot.util.DefaultBotButton;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage.SendMessageBuilder;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Optional;
 
 @Component
 public class CallbackHandler {
 
-    private final UserService userService;
-    private final PostService postService;
+    private final ApplicationContext ctx;
 
-    private final InlineKeyboardMaker inlineKeyboardMaker;
-
-    public CallbackHandler(UserService userService, PostService postService, InlineKeyboardMaker inlineKeyboardMaker) {
-        this.userService = userService;
-        this.postService = postService;
-        this.inlineKeyboardMaker = inlineKeyboardMaker;
+    public CallbackHandler(ApplicationContext ctx) {
+        this.ctx = ctx;
     }
 
     public SendMessage handle(CallbackQuery callbackQuery) {
         String query = callbackQuery.getData();
         String chatId = callbackQuery.getFrom().getId().toString();
         String command = query.split(" ")[0];
-        long postId = Long.parseLong(query.split(" ")[1]);
-        SendMessageBuilder sendMessage = SendMessage.builder().chatId(chatId);
-        switch (command) {
-            case "show" -> {
-                String text = postService.getPostById(postId).getText();
-                return sendMessage.text(text)
-                        .replyMarkup(inlineKeyboardMaker.getPostKeyboard(postId))
-                        .build();
-            }
-            case "delete" -> {
-                postService.deletePost(postId);
-                return sendMessage.text(DefaultBotMessage.DELETED.getMessage())
-                        .build();
-            }
-            case "rename-title" -> {
-                userService.changeCurrentIdPostForCommand(postId, Long.valueOf(chatId));
-                userService.changeUserBotState(BotState.WAIT_NEW_POST_NAME,
-                        callbackQuery.getFrom().getId());
-                return sendMessage.text(DefaultBotMessage.ENTER_NEW_TITLE.getMessage())
-                        .build();
-            }
-            case "update-text" -> {
-                userService.changeCurrentIdPostForCommand(postId, Long.valueOf(chatId));
-                userService.changeUserBotState(BotState.WAIT_NEW_CONTENT_FOR_NOTE_UPDATE,
-                        callbackQuery.getFrom().getId());
-                return sendMessage.text(DefaultBotMessage.ENTER_NEW_TEXT_POST.getMessage())
-                        .build();
-            }
-            case "add-text" -> {
-                userService.changeCurrentIdPostForCommand(postId, Long.valueOf(chatId));
-                userService.changeUserBotState(BotState.WAIT_NEW_CONTENT_FOR_NOTE_ADD,
-                        callbackQuery.getFrom().getId());
-                return sendMessage.text(DefaultBotMessage.ENTER_ADDITIONAL_TEXT_POST.getMessage())
-                        .build();
-            }
+        Long postId = Long.parseLong(query.split(" ")[1]);
+        CallBackCommand callBackCommand = determineCommand(command);
+        if (Objects.nonNull(callBackCommand)) {
+            return callBackCommand.execute(postId, Long.parseLong(chatId));
         }
         return null;
     }
 
+    private CallBackCommand determineCommand(String command) {
+        Optional<DefaultBotButton> defaultBotReplyButton = findCommandByMessageText(command);
+        if (defaultBotReplyButton.isEmpty()) {
+            return null;
+        }
+        return switch (defaultBotReplyButton.get()) {
+            case SHOW_BUTTON -> ctx.getBean("showButtonCommand", ShowButtonCommand.class);
+            case DELETE_BUTTON -> ctx.getBean("deletePostCommand", DeletePostCommand.class);
+            case RENAME_TITLE_BUTTON -> ctx.getBean("renameTitleCommand", RenameTitleCommand.class);
+            case UPDATE_TEXT_BUTTON -> ctx.getBean("updateTextCommand", UpdateTextCommand.class);
+            case ADD_TEXT_BUTTON -> ctx.getBean("addTextCommand", AddTextCommand.class);
+        };
+    }
+
+    private Optional<DefaultBotButton> findCommandByMessageText(String command) {
+        return Arrays.stream(DefaultBotButton.values())
+                .filter(val -> val.getCallbackData().trim().equals(command))
+                .findFirst();
+    }
 
 }
