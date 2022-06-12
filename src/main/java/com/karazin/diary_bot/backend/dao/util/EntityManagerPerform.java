@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 @Component
+@Deprecated
 public class EntityManagerPerform {
 
     @Getter

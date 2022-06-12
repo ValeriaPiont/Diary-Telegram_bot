@@ -8,6 +8,7 @@ import java.util.Optional;
 /**
  * defines and API of Data-Access Object for entity Post
  */
+@Deprecated
 public interface PostDAO {
 
     /**

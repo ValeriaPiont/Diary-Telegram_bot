@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @Repository
 @Slf4j
+@Deprecated
 public class UserDAOImpl implements UserDAO {
 
     private final EntityManagerPerform entityManagerPerform;

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Deprecated
 public class PostDAOImpl implements PostDAO {
 
     private final EntityManagerPerform entityManagerPerform;
