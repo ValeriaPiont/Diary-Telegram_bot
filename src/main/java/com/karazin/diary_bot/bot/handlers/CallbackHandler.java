@@ -9,10 +9,6 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage.SendMessageBuilder;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-
-import java.util.List;
 
 @Component
 public class CallbackHandler {
@@ -35,37 +31,38 @@ public class CallbackHandler {
         long postId = Long.parseLong(query.split(" ")[1]);
         SendMessageBuilder sendMessage = SendMessage.builder().chatId(chatId);
         switch (command) {
-            case "show":
-                List<List<InlineKeyboardButton>> buttonsShow = inlineKeyboardMaker.getPostKeyboard(postId);
+            case "show" -> {
                 String text = postService.getPostById(postId).getText();
                 return sendMessage.text(text)
-                        .replyMarkup(InlineKeyboardMarkup
-                                .builder()
-                                .keyboard(buttonsShow)
-                                .build())
+                        .replyMarkup(inlineKeyboardMaker.getPostKeyboard(postId))
                         .build();
-            case "delete":
+            }
+            case "delete" -> {
                 postService.deletePost(postId);
                 return sendMessage.text(DefaultBotMessage.DELETED.getMessage())
                         .build();
-            case "rename-title":
+            }
+            case "rename-title" -> {
                 userService.changeCurrentIdPostForCommand(postId, Long.valueOf(chatId));
                 userService.changeUserBotState(BotState.WAIT_NEW_POST_NAME,
                         callbackQuery.getFrom().getId());
                 return sendMessage.text(DefaultBotMessage.ENTER_NEW_TITLE.getMessage())
                         .build();
-            case "update-text":
+            }
+            case "update-text" -> {
                 userService.changeCurrentIdPostForCommand(postId, Long.valueOf(chatId));
                 userService.changeUserBotState(BotState.WAIT_NEW_CONTENT_FOR_NOTE_UPDATE,
                         callbackQuery.getFrom().getId());
                 return sendMessage.text(DefaultBotMessage.ENTER_NEW_TEXT_POST.getMessage())
                         .build();
-            case "add-text":
+            }
+            case "add-text" -> {
                 userService.changeCurrentIdPostForCommand(postId, Long.valueOf(chatId));
                 userService.changeUserBotState(BotState.WAIT_NEW_CONTENT_FOR_NOTE_ADD,
                         callbackQuery.getFrom().getId());
                 return sendMessage.text(DefaultBotMessage.ENTER_ADDITIONAL_TEXT_POST.getMessage())
                         .build();
+            }
         }
         return null;
     }

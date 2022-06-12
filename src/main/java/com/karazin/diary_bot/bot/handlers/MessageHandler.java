@@ -37,11 +37,11 @@ public class MessageHandler {
                 return;
             }
             switch (botState) {
-                case WAIT_CONTENT_FOR_NOTE:
+                case WAIT_CONTENT_FOR_NOTE -> {
                     postService.savePostText(text, telegramId);
                     sendMessage.setText(DefaultBotMessage.CREATED.getMessage());
-                    break;
-                case WAIT_NEW_POST_NAME:
+                }
+                case WAIT_NEW_POST_NAME -> {
                     boolean isUpdated = postService
                             .updatePostTitle(userService.getCurrentIdPostForCommandById(telegramId), text);
                     if (isUpdated) {
@@ -50,18 +50,16 @@ public class MessageHandler {
                         sendMessage.setText(DefaultBotMessage.INVALID_TITLE.getMessage());
                         changeBotState = false;
                     }
-                    break;
-                case WAIT_NEW_CONTENT_FOR_NOTE_ADD:
+                }
+                case WAIT_NEW_CONTENT_FOR_NOTE_ADD -> {
                     postService.updatePostText(userService.getCurrentIdPostForCommandById(telegramId), text, false);
                     sendMessage.setText(DefaultBotMessage.ADDED.getMessage());
-                    break;
-                case WAIT_NEW_CONTENT_FOR_NOTE_UPDATE:
+                }
+                case WAIT_NEW_CONTENT_FOR_NOTE_UPDATE -> {
                     postService.updatePostText(userService.getCurrentIdPostForCommandById(telegramId), text, true);
                     sendMessage.setText(DefaultBotMessage.UPDATED.getMessage());
-                    break;
-                default:
-                    sendMessage.setText(DefaultBotMessage.INVALID_TEXT.getMessage());
-                    break;
+                }
+                default -> sendMessage.setText(DefaultBotMessage.INVALID_TEXT.getMessage());
             }
             if (changeBotState) {
                 userService.changeUserBotState(BotState.WAIT_FOR_COMMAND, telegramId);
