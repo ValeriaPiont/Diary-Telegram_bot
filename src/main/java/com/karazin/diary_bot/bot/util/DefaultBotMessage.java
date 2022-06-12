@@ -23,7 +23,7 @@ public enum DefaultBotMessage {
     UPDATED("Successfully updated✨"),
     ADDED("Successfully added✨"),
     UNKNOWN_TEXT("I don't understand you\uD83D\uDE14. Try to use /show_all_posts command"),
-    INVALID_TEXT("❗You should send me the text"),
+    INVALID_TEXT("I don't understand you \uD83E\uDD7A"),
     INVALID_TITLE("❗Title should be less then 50 characters");
 
     private String message;

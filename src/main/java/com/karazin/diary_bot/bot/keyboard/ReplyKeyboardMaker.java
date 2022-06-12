@@ -1,5 +1,6 @@
 package com.karazin.diary_bot.bot.keyboard;
 
+import com.karazin.diary_bot.bot.util.DefaultBotReplyButton;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
@@ -14,8 +15,8 @@ public class ReplyKeyboardMaker {
     public ReplyKeyboardMarkup getMainMenuKeyboard() {
         KeyboardRow row1 = new KeyboardRow();
         KeyboardRow row2 = new KeyboardRow();
-        row1.add(new KeyboardButton("/add_post"));
-        row2.add(new KeyboardButton("/show_all_posts"));
+        row1.add(new KeyboardButton(DefaultBotReplyButton.ADD_REPLY_BUTTON.getButtonData()));
+        row2.add(new KeyboardButton(DefaultBotReplyButton.SHOW_REPLY_BUTTON.getButtonData()));
 
         List<KeyboardRow> keyboard = new ArrayList<>();
         keyboard.add(row1);

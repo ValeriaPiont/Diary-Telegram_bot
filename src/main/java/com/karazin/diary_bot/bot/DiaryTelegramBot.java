@@ -7,11 +7,12 @@ import com.karazin.diary_bot.bot.config.client.TelegramClient;
 import com.karazin.diary_bot.bot.exceptions.DiaryTelegramBotException;
 import com.karazin.diary_bot.bot.handlers.CallbackHandler;
 import com.karazin.diary_bot.bot.handlers.MessageHandler;
+import com.karazin.diary_bot.bot.handlers.commands.Command;
 import com.karazin.diary_bot.bot.handlers.commands.impl.AddPostCommand;
 import com.karazin.diary_bot.bot.handlers.commands.impl.ShowAllPostsCommand;
 import com.karazin.diary_bot.bot.handlers.commands.impl.StartCommand;
-import com.karazin.diary_bot.bot.handlers.commands.Command;
 import com.karazin.diary_bot.bot.util.BotState;
+import com.karazin.diary_bot.bot.util.DefaultBotReplyButton;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -38,7 +40,7 @@ public class DiaryTelegramBot extends TelegramWebhookBot {
     private final ApplicationContext ctx;
 
     public DiaryTelegramBot(BotConfig config, MessageHandler messageHandler, CallbackHandler callbackHandler,
-                           TelegramClient telegramClient, UserService userService, ApplicationContext ctx) {
+                            TelegramClient telegramClient, UserService userService, ApplicationContext ctx) {
         this.config = config;
         this.messageHandler = messageHandler;
         this.callbackHandler = callbackHandler;
@@ -67,7 +69,7 @@ public class DiaryTelegramBot extends TelegramWebhookBot {
             Long chatId = message.getFrom().getId();
             String username = message.getFrom().getFirstName();
             processUser(chatId, username);
-            Command command = determineCommand(update.getMessage().getText());
+            Command command = determineCommand(message.getText());
             if (Objects.nonNull(command)) {
                 execute(command.execute(update.getMessage().getChatId()));
             } else {
@@ -80,12 +82,19 @@ public class DiaryTelegramBot extends TelegramWebhookBot {
     }
 
     private Command determineCommand(String command) {
-        return switch (command) {
-            case "/start" -> ctx.getBean("startCommand", StartCommand.class);
-            case "/add_post" -> ctx.getBean("addPostCommand", AddPostCommand.class);
-            case "/show_all_posts" -> ctx.getBean("showAllPostsCommand", ShowAllPostsCommand.class);
-            default -> null;
+        Optional<DefaultBotReplyButton> defaultBotReplyButton = findByMessageText(command);
+        if(defaultBotReplyButton.isEmpty()) {
+            return null;
+        }
+        return switch (defaultBotReplyButton.get()) {
+            case START_COMMAND -> ctx.getBean("startCommand", StartCommand.class);
+            case ADD_REPLY_BUTTON -> ctx.getBean("addPostCommand", AddPostCommand.class);
+            case SHOW_REPLY_BUTTON -> ctx.getBean("showAllPostsCommand", ShowAllPostsCommand.class);
         };
+    }
+
+    private Optional<DefaultBotReplyButton> findByMessageText(String command) {
+        return Arrays.stream(DefaultBotReplyButton.values()).filter(val -> val.getButtonData().equals(command)).findFirst();
     }
 
     private void processUser(Long telegramId, String username) {
