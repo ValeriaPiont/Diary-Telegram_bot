@@ -1,7 +1,7 @@
-package com.karazin.diary_bot.bot.handlers.commands.impl;
+package com.karazin.diary_bot.bot.handlers.commands.replyKeyboardCommands.impl;
 
 import com.karazin.diary_bot.backend.services.UserService;
-import com.karazin.diary_bot.bot.handlers.commands.Command;
+import com.karazin.diary_bot.bot.handlers.commands.replyKeyboardCommands.Command;
 import com.karazin.diary_bot.bot.util.BotState;
 import com.karazin.diary_bot.bot.util.DefaultBotMessage;
 import org.springframework.stereotype.Component;

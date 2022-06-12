@@ -7,10 +7,10 @@ import com.karazin.diary_bot.bot.config.client.TelegramClient;
 import com.karazin.diary_bot.bot.exceptions.DiaryTelegramBotException;
 import com.karazin.diary_bot.bot.handlers.CallbackHandler;
 import com.karazin.diary_bot.bot.handlers.MessageHandler;
-import com.karazin.diary_bot.bot.handlers.commands.Command;
-import com.karazin.diary_bot.bot.handlers.commands.impl.AddPostCommand;
-import com.karazin.diary_bot.bot.handlers.commands.impl.ShowAllPostsCommand;
-import com.karazin.diary_bot.bot.handlers.commands.impl.StartCommand;
+import com.karazin.diary_bot.bot.handlers.commands.replyKeyboardCommands.Command;
+import com.karazin.diary_bot.bot.handlers.commands.replyKeyboardCommands.impl.AddPostCommand;
+import com.karazin.diary_bot.bot.handlers.commands.replyKeyboardCommands.impl.ShowAllPostsCommand;
+import com.karazin.diary_bot.bot.handlers.commands.replyKeyboardCommands.impl.StartCommand;
 import com.karazin.diary_bot.bot.util.BotState;
 import com.karazin.diary_bot.bot.util.DefaultBotReplyButton;
 import lombok.extern.slf4j.Slf4j;
@@ -82,7 +82,7 @@ public class DiaryTelegramBot extends TelegramWebhookBot {
     }
 
     private Command determineCommand(String command) {
-        Optional<DefaultBotReplyButton> defaultBotReplyButton = findByMessageText(command);
+        Optional<DefaultBotReplyButton> defaultBotReplyButton = findCommandByMessageText(command);
         if(defaultBotReplyButton.isEmpty()) {
             return null;
         }
@@ -93,8 +93,10 @@ public class DiaryTelegramBot extends TelegramWebhookBot {
         };
     }
 
-    private Optional<DefaultBotReplyButton> findByMessageText(String command) {
-        return Arrays.stream(DefaultBotReplyButton.values()).filter(val -> val.getButtonData().equals(command)).findFirst();
+    private Optional<DefaultBotReplyButton> findCommandByMessageText(String command) {
+        return Arrays.stream(DefaultBotReplyButton.values())
+                .filter(val -> val.getButtonData().equals(command))
+                .findFirst();
     }
 
     private void processUser(Long telegramId, String username) {

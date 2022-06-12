@@ -1,7 +1,7 @@
-package com.karazin.diary_bot.bot.handlers.commands.callBackCommands.impl;
+package com.karazin.diary_bot.bot.handlers.commands.callbackCommands.impl;
 
 import com.karazin.diary_bot.backend.services.PostService;
-import com.karazin.diary_bot.bot.handlers.commands.callBackCommands.CallBackCommand;
+import com.karazin.diary_bot.bot.handlers.commands.callbackCommands.CallBackCommand;
 import com.karazin.diary_bot.bot.keyboard.InlineKeyboardMaker;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;

@@ -1,4 +1,4 @@
-package com.karazin.diary_bot.bot.handlers.commands.callBackCommands;
+package com.karazin.diary_bot.bot.handlers.commands.callbackCommands;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 

@@ -1,7 +1,7 @@
-package com.karazin.diary_bot.bot.handlers.commands.callBackCommands.impl;
+package com.karazin.diary_bot.bot.handlers.commands.callbackCommands.impl;
 
 import com.karazin.diary_bot.backend.services.UserService;
-import com.karazin.diary_bot.bot.handlers.commands.callBackCommands.CallBackCommand;
+import com.karazin.diary_bot.bot.handlers.commands.callbackCommands.CallBackCommand;
 import com.karazin.diary_bot.bot.util.BotState;
 import com.karazin.diary_bot.bot.util.DefaultBotMessage;
 import org.springframework.stereotype.Component;
