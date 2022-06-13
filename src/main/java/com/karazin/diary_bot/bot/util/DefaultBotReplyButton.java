@@ -9,7 +9,8 @@ public enum DefaultBotReplyButton {
 
     START_COMMAND("/start"),
     ADD_REPLY_BUTTON("Add post"),
-    SHOW_REPLY_BUTTON("Show all posts");
+    SHOW_REPLY_BUTTON("Show all posts"),
+    BACK_BUTTON("Back");
 
     private String buttonData;
 

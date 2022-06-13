@@ -16,7 +16,8 @@ public class ReplyKeyboardMaker {
         KeyboardRow row1 = new KeyboardRow();
         KeyboardRow row2 = new KeyboardRow();
         row1.add(new KeyboardButton(DefaultBotReplyButton.ADD_REPLY_BUTTON.getButtonData()));
-        row2.add(new KeyboardButton(DefaultBotReplyButton.SHOW_REPLY_BUTTON.getButtonData()));
+        row1.add(new KeyboardButton(DefaultBotReplyButton.SHOW_REPLY_BUTTON.getButtonData()));
+        row2.add(new KeyboardButton(DefaultBotReplyButton.BACK_BUTTON.getButtonData()));
 
         List<KeyboardRow> keyboard = new ArrayList<>();
         keyboard.add(row1);

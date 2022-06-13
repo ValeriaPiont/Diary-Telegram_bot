@@ -9,6 +9,7 @@ import com.karazin.diary_bot.bot.handlers.CallbackHandler;
 import com.karazin.diary_bot.bot.handlers.MessageHandler;
 import com.karazin.diary_bot.bot.handlers.commands.replyKeyboardCommands.Command;
 import com.karazin.diary_bot.bot.handlers.commands.replyKeyboardCommands.impl.AddPostCommand;
+import com.karazin.diary_bot.bot.handlers.commands.replyKeyboardCommands.impl.BackCommand;
 import com.karazin.diary_bot.bot.handlers.commands.replyKeyboardCommands.impl.ShowAllPostsCommand;
 import com.karazin.diary_bot.bot.handlers.commands.replyKeyboardCommands.impl.StartCommand;
 import com.karazin.diary_bot.bot.util.BotState;
@@ -90,6 +91,7 @@ public class DiaryTelegramBot extends TelegramWebhookBot {
             case START_COMMAND -> ctx.getBean("startCommand", StartCommand.class);
             case ADD_REPLY_BUTTON -> ctx.getBean("addPostCommand", AddPostCommand.class);
             case SHOW_REPLY_BUTTON -> ctx.getBean("showAllPostsCommand", ShowAllPostsCommand.class);
+            case BACK_BUTTON -> ctx.getBean("backCommand", BackCommand.class);
         };
     }
 
