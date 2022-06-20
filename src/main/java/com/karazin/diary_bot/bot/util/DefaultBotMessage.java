@@ -24,7 +24,9 @@ public enum DefaultBotMessage {
     ADDED("Successfully added✨"),
     UNKNOWN_TEXT("I don't understand you\uD83D\uDE14. Try to use /show_all_posts command"),
     INVALID_TEXT("I don't understand you \uD83E\uDD7A"),
-    INVALID_TITLE("❗Title should be less then 50 characters");
+    INVALID_TITLE("❗Title should be less then 50 characters"),
+    BACK_DONE("Canceled✨"),
+    BACK_NOTHING("Nothing to cancel");
 
     private String message;
 

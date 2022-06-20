@@ -18,11 +18,19 @@ public class BackCommand implements Command {
 
     @Override
     public SendMessage execute(Long chatId) {
-//        userService.getUserBotStateByTelegramId(chatId); // get current state
-        userService.changeUserBotState(BotState.WAIT_FOR_COMMAND, chatId);
-        return SendMessage.builder()
+        SendMessage.SendMessageBuilder sendMessage =  SendMessage.builder()
                 .chatId(chatId.toString())
-                .text("Backkkkk").build();
+                .text(checkCommand(chatId));
+        userService.changeUserBotState(BotState.WAIT_FOR_COMMAND, chatId);
+        return sendMessage.build();
+    }
+
+    private String checkCommand(Long chatId) {
+        BotState botState = userService.getUserBotStateByTelegramId(chatId);
+        if(botState.equals(BotState.WAIT_FOR_COMMAND)) {
+            return DefaultBotMessage.BACK_NOTHING.getMessage();
+        }
+        return DefaultBotMessage.BACK_DONE.getMessage();
     }
 
 }
