@@ -73,3 +73,12 @@ databaseChangeLog:
             referencedColumnNames: user_id
             referencedTableName: users
             validate: true
+  - changeSet:
+      id: 1655764385039-6
+      author: Valeria
+      changes:
+        - modifyDataType:
+            columnName: post_title
+            newDataType: varchar(50)
+            schemaName: public
+            tableName: posts
