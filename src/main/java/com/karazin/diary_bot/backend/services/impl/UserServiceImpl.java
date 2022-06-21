@@ -1,6 +1,5 @@
 package com.karazin.diary_bot.backend.services.impl;
 
-import com.karazin.diary_bot.backend.dao.impl.UserDAOImpl;
 import com.karazin.diary_bot.backend.entities.User;
 import com.karazin.diary_bot.backend.exceptions.EntityIsNullException;
 import com.karazin.diary_bot.backend.exceptions.EntityNotFoundException;
@@ -18,9 +17,7 @@ import java.util.Optional;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-    //    private final UserDAOImpl userDAO;
     private final UserRepository userRepository;
-
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {

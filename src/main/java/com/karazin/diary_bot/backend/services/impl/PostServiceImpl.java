@@ -1,6 +1,5 @@
 package com.karazin.diary_bot.backend.services.impl;
 
-import com.karazin.diary_bot.backend.dao.impl.UserDAOImpl;
 import com.karazin.diary_bot.backend.exceptions.EntityNotFoundException;
 import com.karazin.diary_bot.backend.entities.Post;
 import com.karazin.diary_bot.backend.entities.User;
@@ -24,10 +23,8 @@ public class PostServiceImpl implements PostService {
     private static final String DATE_TITLE_UPDATED = "Note updated ";
     private static final String DATE_TITLE_FORMAT = "dd-MM-yyyy HH:mm";
 
-//    private final PostDAOImpl postDAO;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-//    private final UserDAOImpl userDAO;
 
     @Autowired
     public PostServiceImpl(PostRepository postRepository, UserRepository userRepository) {
@@ -57,7 +54,6 @@ public class PostServiceImpl implements PostService {
         Post updatedPost = getPostById(postId);
         updatedPost.setTitle(title);
         postRepository.save(updatedPost);
-//        postDAO.updatePost(updatedPost);
         log.info("Post with id {} was updated (title)", postId);
         return true;
     }
@@ -81,8 +77,6 @@ public class PostServiceImpl implements PostService {
             updatedPost.setTitle(createDateTitle(date, false));
         }
         postRepository.save(updatedPost);
-
-//        postDAO.updatePost(updatedPost);
         log.info("Updated post {}", updatedPost);
     }
 
@@ -93,21 +87,17 @@ public class PostServiceImpl implements PostService {
     }
 
     public void deletePost(Long postId) {
-//        Post post = getPostById(postId);
         postRepository.deleteById(postId);
-//        postDAO.deletePost(post);
         log.info("Deleted post with id {}", postId);
     }
 
     public List<Post> getAllPostsByUserTelegramId(Long telegramId) {
         log.info("Get all posts");
         return postRepository.findAllByUserTelegramIdOrderByCreatedOnDesc(telegramId);
-//        return postDAO.findAllPosts(telegramId);
     }
 
     public Post getPostById(Long postId) {
         return postRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("Post with id " + postId + " not found"));
-//        return postDAO.findPostById(postId).orElseThrow(() -> new EntityNotFoundException("Post with id " + postId + " not found"));
     }
 
 }
