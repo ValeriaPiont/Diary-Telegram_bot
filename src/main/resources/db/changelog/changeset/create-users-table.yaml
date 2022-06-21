@@ -1,18 +1,24 @@
 databaseChangeLog:
   - changeSet:
-      id: v1-1
+      id: 1655764385039-1
       author: Valeria
       changes:
+        - preConditions:
+          - onFail: MARK_RAN
+          - not:
+              - tableExists:
+                  - tableName: users
         - createTable:
             tableName: users
             columns:
               - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: user_pkey
+                  autoIncrement: true
                   name: user_id
                   type: bigint
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                    nullable: false
               - column:
                   name: telegram_id
                   type: bigint
@@ -31,12 +37,3 @@ databaseChangeLog:
               - column:
                   name: chosen_post_id
                   type: integer
-  - changeSet:
-      id: v1-3
-      author: Valeria
-      changes:
-        - modifyDataType:
-            columnName: chosen_post_id
-            newDataType: bigint
-            schemaName: public
-            tableName: users

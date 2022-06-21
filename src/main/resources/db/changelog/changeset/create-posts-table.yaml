@@ -1,0 +1,75 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1655764385039-2
+      author: Valeria
+      changes:
+        - preConditions:
+            - onFail: MARK_RAN
+            - not:
+                - tableExists:
+                    - tableName: posts
+        - createTable:
+            tableName: posts
+            columns:
+              - column:
+                  name: post_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: publish_date
+                  type: timestamp
+              - column:
+                  name: update_date
+                  type: timestamp
+              - column:
+                  name: post_text
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: post_title
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 1655764385039-3
+      author: Valeria
+      changes:
+        - preConditions:
+            - onFail: MARK_RAN
+            - not:
+                - columnExists:
+                    - columnName: user_id
+                    - tableName: posts
+        - addColumn:
+            tableName: posts
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 1655764385039-4
+      author: Valeria
+      changes:
+        - preConditions:
+            - onFail: MARK_RAN
+            - not:
+                - foreignKeyConstraintExists:
+                    - foreignKeyName: FK_posts_users
+                    - tableName: posts
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: posts
+            constraintName: FK_posts_users
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: user_id
+            referencedTableName: users
+            validate: true

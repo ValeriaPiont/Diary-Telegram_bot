@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1655764385039-5
+      author: Valeria
+      changes:
+        - createSequence:
+            cacheSize: 1
+            cycle: false
+            dataType: bigint
+            incrementBy: 1
+            maxValue: 9223372036854775807
+            minValue: 1
+            sequenceName: hibernate_sequence
+            startValue: 1
