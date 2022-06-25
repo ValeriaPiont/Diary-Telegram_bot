@@ -13,8 +13,11 @@ This is a telegram bot to manage notes.
 ## Interaction with bot 
 
 ![alt text](images/interaction_1.jpg)
+
 ![alt text](images/interaction_2.jpg)
+
 ![alt text](images/interaction_3.jpg)
+
 ![alt text](images/interaction_4.jpg)
 
 ## Technologies
